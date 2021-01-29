@@ -1,11 +1,21 @@
 class Vehicle:
-    def __init__(self, make=None, model=None, year=None, color=None, price=None):
+    # Constructor of the class, creates the object with the attributes (optional)
+    def __init__(self, id=None, make=None, model=None, year=None, color=None, price=None):
+        # if attributes are provided, stores the values to the object
+        self.id = id
         self.make = make
         self.model = model
         self.year = year
         self.color = color
         self.price = price
 
+    #setters and getters, allows the object to set attribute values, and return values
+    def setId(self, id):
+        self.id = id
+    
+    def getId(self):
+        return self.id
+    
     def setMake(self, make):
         self.make = make
 

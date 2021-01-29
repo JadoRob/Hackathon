@@ -8,11 +8,18 @@ import calculate
 import time
 from calculate import calculateTotal
 import database
+from database import createCustomer
+
+# HACKATHON Python project 
+# by Jane, Jeff, Terrell, and Rob
+# assisted by Professor Dunieski Otano
 
 #Functions -----------------------------------------
 def readDatabase():
+    # creates connection
     conn = c.returnConnection()
     try:
+        # cursor goes through the vehicles table display information
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM vehicles')
         # go through each row of the table
@@ -26,8 +33,10 @@ def readDatabase():
             Price: ${row[5]}
             -------------------------------------------------------
             ''')
+        #closes the connection
         cursor.close() 
         conn.close() 
+    # if unable to connect or read the database, shows the errorr
     except(Exception, mysql.connector.Error) as error:
         print('Error while fetching data from MySQL', error)
 #Functions -----------------------------------------
@@ -35,21 +44,27 @@ def readDatabase():
 
 print('')
 print('Welcome to the dealership!')
+customer = input('May we have your name please? >> ')
+# createCustomer(customer)
+
 cart = []
 counter = 1
 # enter a while loop, exit if user chooses to stop purchasing
 while (True):
+    vehicle = Vehicle()
     print("Here's our inventory: ")
     
-    #open a connection and display each row of the table to show the inventory
+    # open a connection and display each row of the table to show the inventory
     readDatabase()
     print("")
-    #choose a vehicle by selecting id
+
+    # choose a vehicle by selecting id
     selection = input('What would you like to purchase? (please enter the id number) >> ')
     print('Thank you, searching through inventory... ')
     #time.sleep(3)
+    
     #store the object that's returned from the database file, and use the get functions
-    #to get the price and color
+    # to get the price and color
     vehicle = database.getVehicle(selection)
     price = vehicle.getPrice()
     color = vehicle.getColor()
@@ -57,48 +72,27 @@ while (True):
     veteran = input('Are you a war veteran? [y/n] >> ')
     disabled = input('Do you have any disablilites? [y/n] >> ')
     print('Thank you for the information, calculating total... ')
-    #time.sleep(3)
-    #get the total from
+    # time.sleep(3)
+   
+    # get the total from calculate.py file using the calculateTotal method
     totalPrice = calculateTotal(color, price, veteran, disabled)
+
     print(f'The total price is: ${totalPrice}')
     buyNow = input(f'Would you like to make the purchase? [y/n] >> ')
     if (buyNow == 'y'):
-        cart.append(Vehicle(counter))
+        # create the customer order for the purchase
+        database.createOrder(customer, vehicle.getId()) 
         print('')
+        # adds 1 to counter as each car is purchased, max is 5 purchases
         if (counter == 5):
+            # exits out of the while loop and ends program
             break
-        proceed = input(f'Thank you for your purchase! Would you like to purchase more? [y/n] >>')
+        proceed = input(f'Thank you for your business! Would you like to look around some more? [y/n] >>')
         if (proceed == 'n'):
             break     
     counter += 1
-for obj in cart:
-    print(vehicle.getMake())
-
+#for obj in cart:
+    # print(vehicle.getMake())
+print('Thank you for your business! Have a great day and safe driving.')
         
         
-
-
-
-# print('''
-# Lets take a look at what your looking for.
-
-# 1. Make
-# 2. Model
-# 3. Year
-# 4. Color
-
-# ''')
-# selection = input('Please choose a number [1-4]: >> ')
-
-# make = input("What's the make? >> ")
-# model = input("What's the model? >> ")
-# year = input("What's the year? >> ")
-# color = input("What color are you looking for? >> ")
-# vehicle1 = Vehicle(make, model, year, color)
-# print('')
-# print('Here is what your looking for: ')
-# print(f'''
-# Make and model: {vehicle1.getMake()} {vehicle1.getModel()} 
-# Year: {vehicle1.getYear()}
-# Color: {vehicle1.getColor()}
-# ''')

@@ -10,7 +10,7 @@ from decimal import Decimal
 
 
 def calculateTotal(color, price, veteran, disabled):
-    print (f'from within calculateTotal, prince = {price}')
+    print (f'Your base price is ............... ${price}')
     totalPrice = price
     if (color == 'black'):
         totalPrice = totalPrice * Decimal(.75)
@@ -18,7 +18,7 @@ def calculateTotal(color, price, veteran, disabled):
         totalPrice = totalPrice - 400
     if ((veteran == 'y') or (disabled == 'y')):
         totalPrice = (totalPrice * Decimal(.75)) - 500
-    #tax
+    #tax       
     totalPrice *= Decimal(1.05)
     return round(totalPrice ,2)
     
